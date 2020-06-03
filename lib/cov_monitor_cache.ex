@@ -3,6 +3,7 @@ defmodule CovMonitor.Cache do
     Module responsible to implement GenServer
   """
   use GenServer
+  @behaviour CovMonitor.Cache.Behavior
 
   def init(_init_arg) do
     # IO.inspect("init GenServer")
@@ -28,6 +29,6 @@ defmodule CovMonitor.Cache do
   end
 
   def get(country) do
-    GenServer.call(__MODULE__, {:get, country})
+    {:ok, GenServer.call(__MODULE__, {:get, country})}
   end
 end

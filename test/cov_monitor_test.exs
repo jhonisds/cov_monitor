@@ -6,7 +6,7 @@ defmodule CovMonitorTest do
 
   require Logger
 
-  alias CovMonitor.Logic
+  alias CovMonitor.{Logic, Mock}
   alias Test.Fixtures.Api, as: Fix
 
   doctest(CovMonitor)
@@ -16,7 +16,9 @@ defmodule CovMonitorTest do
   describe "cases_by/0" do
     @tag :done
     test "returns list of cases" do
-      CovMonitor.Http.Mock
+      Mock
+      |> expect(:get, fn _country -> {:ok, nil} end)
+      |> expect(:put, fn _country, data -> {:ok, data} end)
       |> expect(:cases_by, fn _country ->
         {:ok, [Fix.data_intern()]}
       end)
@@ -26,7 +28,8 @@ defmodule CovMonitorTest do
 
     @tag :done
     test "returns erro from request" do
-      CovMonitor.Http.Mock
+      Mock
+      |> expect(:get, fn _country -> {:ok, nil} end)
       |> expect(:cases_by, fn _country -> {:error, "Bad request"} end)
 
       assert capture_log(fn -> CovMonitor.data_covid() end) =~ "Bad request"

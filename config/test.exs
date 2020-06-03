@@ -1,3 +1,4 @@
 import Config
 
-config :cov_monitor, covapi: CovMonitor.Http.Mock
+config :cov_monitor, covapi: CovMonitor.Mock
+config :cov_monitor, covcache: CovMonitor.Mock
